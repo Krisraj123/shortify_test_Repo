@@ -12,11 +12,14 @@ import { videoDataContext } from '@/app/_context/videoDatacontext';
 import { db } from '@/configs/db';
 import { VideoData, VideoDatas } from '@/configs/schema';
 import { useUser } from '@clerk/nextjs';
+import PlayerLayout from '../_components/PlayerLayout';
 
 //const script = "Imagine a Roman marketplace, vibrant with life. But beneath the surface, a secret was brewing..This baker, not unlike others, was about to change history. He wasn't baking just bread; he was baking ergot..Ergot, a fungus that causes hallucinations and fits. Its accidental inclusion in his bread… sparked a city-wide, bizarre and disturbing episode.Senators struggled to understand the mass confusion and erratic behaviors. Was it divine punishment? A revolt? It took years to trace it back to a simple loaf of bread."
 //const fileUrl = "https://ykapplpdlhldwgwsgrxf.supabase.co/storage/v1/object/public/shortify_public/6070ec11-6f27-4f15-aee7-d78c8ab4268f.mp3"
 
 const CreateNew = () => {
+  const [playVideo,setPlayVideo] = useState(true);
+  const [videoId,setVideoId] = useState(9);
   const [formData,setFormData] = useState({});
   const [loading,setLoading] = useState(false);
   const [videoScript,setVideoScript] = useState()
@@ -122,7 +125,8 @@ const CreateNew = () => {
         })
         console.log(response.data.result);
         console.log(user.primaryEmailAddress.emailAddress)
-        images.push(response.data.result);
+        images.push(response.data.result.publicUrl);
+        console.log(images)
       }catch(e){
         console.log("error",e);
         setLoading(false);
@@ -157,7 +161,8 @@ const CreateNew = () => {
           imageList: videoData?.imageList || [1, 2],
           createdBy: user?.primaryEmailAddress?.emailAddress || 'empty',
         }).returning({id: VideoData.id});
-    
+        setVideoId(result[0].id);
+        setPlayVideo(true);
         console.log(result);
       } catch (error) {
         console.error('Error saving video data:', error);
@@ -188,6 +193,7 @@ const CreateNew = () => {
           <Button className='mt-10 w-full' onClick={onGenerateVideo}>Generate Video</Button>
         </div>
         <CustomLoading loading={loading}/>
+        <PlayerLayout playVideo={playVideo} videoId={videoId}></PlayerLayout>
     </div>
   )
 }
