@@ -36,11 +36,11 @@ const PlayerLayout = ({playVideo,videoId}) => {
   return (
     
         <Dialog open={openVideo}>
-            <DialogContent className="bg-red flex flex-col items-center">
-                <DialogHeader>
-                <DialogTitle className="text-2xl font-bold my-5">Your video is successfully generated...</DialogTitle>
-              
-                <div className='w-full max-w-xs'>
+            <DialogContent className="bg-red flex flex-col items-center justify-center">
+                <DialogHeader className="w-full flex flex-col items-center space-y-6">
+                <DialogTitle className="text-2xl font-bold my-5 mb-2">Your video is successfully generated...</DialogTitle>
+                
+                <div className='flex justify-center w-full select-none pointer-events-auto '>
                 <Player
                     component={RemotionVideo}
                     durationInFrames={Number(durationInFrame.toFixed(0))}
@@ -54,7 +54,7 @@ const PlayerLayout = ({playVideo,videoId}) => {
                     }}
                 />
                 </div>
-                <div className='flex'>
+                <div className='flex gap-10 mt-9'>
                     <Button variant="ghost">Save to Dashboard</Button>
                     <Button >Download</Button>
                 </div>
