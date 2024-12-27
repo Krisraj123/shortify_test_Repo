@@ -16,7 +16,7 @@ import { db } from '@/configs/db'
 import { VideoData, VideoDatas } from '@/configs/schema'
 import { eq } from 'drizzle-orm'
 import { useRouter } from 'next/navigation'
-const PlayerLayout = ({playVideo,videoId}) => {
+const PlayerLayoutDash = ({playVideo,videoId}) => {
 
   const [openVideo,setOpenVideo]=useState(false);
   const [videoData,setVideoData]=useState();
@@ -58,7 +58,7 @@ const PlayerLayout = ({playVideo,videoId}) => {
                 />
                 </div>
                 <div className='flex gap-10 mt-9'>
-                    <Button variant="ghost" onClick={()=>{setOpenVideo(false);window.location.href = '/dashboard';}}>Save to Dashboard</Button>
+                    <Button variant="secondary" onClick={()=>{setOpenVideo(false);}}>Back</Button>
                     <Button >Download</Button>
                 </div>
 
@@ -72,4 +72,4 @@ const PlayerLayout = ({playVideo,videoId}) => {
   )
 }
 
-export default PlayerLayout
+export default PlayerLayoutDash

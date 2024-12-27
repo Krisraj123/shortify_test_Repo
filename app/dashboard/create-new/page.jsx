@@ -13,19 +13,21 @@ import { db } from '@/configs/db';
 import { VideoData, VideoDatas } from '@/configs/schema';
 import { useUser } from '@clerk/nextjs';
 import PlayerLayout from '../_components/PlayerLayout';
+import { useRouter } from 'next/navigation';
 
 //const script = "Imagine a Roman marketplace, vibrant with life. But beneath the surface, a secret was brewing..This baker, not unlike others, was about to change history. He wasn't baking just bread; he was baking ergot..Ergot, a fungus that causes hallucinations and fits. Its accidental inclusion in his bread… sparked a city-wide, bizarre and disturbing episode.Senators struggled to understand the mass confusion and erratic behaviors. Was it divine punishment? A revolt? It took years to trace it back to a simple loaf of bread."
 //const fileUrl = "https://ykapplpdlhldwgwsgrxf.supabase.co/storage/v1/object/public/shortify_public/6070ec11-6f27-4f15-aee7-d78c8ab4268f.mp3"
 
 const CreateNew = () => {
-  const [playVideo,setPlayVideo] = useState(true);
-  const [videoId,setVideoId] = useState(9);
+  const [playVideo,setPlayVideo] = useState(false);
+  const [videoId,setVideoId] = useState();
   const [formData,setFormData] = useState({});
   const [loading,setLoading] = useState(false);
   const [videoScript,setVideoScript] = useState()
   const [audioFileUrl,setAudioFileUrl] = useState();
   const [caption,setCaption] = useState();
   const [imageList,setImageList] = useState();
+
   const {user} = useUser();
 
   const {videoData,setVideoData} = useContext(videoDataContext);
@@ -62,14 +64,14 @@ const CreateNew = () => {
     setLoading(false);
   }
 
-    
+
 
   }
 
   const GenerateAudioFile = async(videoScriptData)=>{
-    
+
     let script = '';
-   
+
     const id = uuidv4();
     videoScriptData.forEach((item)=>{
       script = script+item.contentText+' ';
@@ -89,7 +91,7 @@ const CreateNew = () => {
     catch(error){
       console.error(error);
     }
-  
+
 
   }
 
@@ -108,14 +110,14 @@ const CreateNew = () => {
     }
     catch(error){
       console.error('Error:',error);
-      
+
       setLoading(false);
     }
-    
+
   }
 
   const GenerateImage = async(videoScriptData)=>{
-    
+
     let images=[];
     for (const element of videoScriptData)
     {
@@ -132,14 +134,14 @@ const CreateNew = () => {
         setLoading(false);
       }
     }
-    
+
     setImageList(images);
     console.log(images,videoScript,audioFileUrl,caption);
     setVideoData(prev=>({
       ...prev,
       'imageList':images
     }))
-    
+
     setLoading(false);
   }
 
@@ -163,6 +165,7 @@ const CreateNew = () => {
         }).returning({id: VideoData.id});
         setVideoId(result[0].id);
         setPlayVideo(true);
+
         console.log(result);
       } catch (error) {
         console.error('Error saving video data:', error);
@@ -170,8 +173,8 @@ const CreateNew = () => {
       }
       setLoading(false);
     };
-    
-  
+
+
   const onGenerateVideo=()=>{
     GetVideoScript();
     //GenerateAudioFile(script);

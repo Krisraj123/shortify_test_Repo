@@ -10,19 +10,19 @@ const SelectStyle = ({onUserSelect}) => {
         },
         {
             name:'Cartoon',
-            image:'/aiimage.jpg'
+            image:'/cartoon.png'
         },
         {
             name:'Comic',
-            image:'/aiimage.jpg'
+            image:'/batman.png'
         },
         {
             name:'Watercolor',
-            image:'/aiimage.jpg'
+            image:'/watercolor.png'
         },
         {
-            name:'GTA',
-            image:'/aiimage.jpg'
+            name:'PixelArt',
+            image:'/pixelart.png'
         },
 
     ]

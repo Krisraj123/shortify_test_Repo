@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <div className='grid grid-cols-1 md:grid-cols-2'>
       <div>
-        <Image src={'/login.jpg'} alt='login'
+        <Image src={'/signup_adityan.jpeg'} alt='login'
         width={500} height={500}
         className='w-full object-contain'/>
       </div>
