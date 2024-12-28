@@ -125,9 +125,16 @@ const CreateNew = () => {
         const response = await axios.post('/api/generate-image',{
           prompt:element.imagePrompt,
         })
-        console.log(response.data.result);
-        console.log(user.primaryEmailAddress.emailAddress)
-        images.push(response.data.result.publicUrl);
+        const taskId = response.data.taskId;
+        const result = await PollForCompletion(taskId);
+        //console.log(response.data.result);
+        //console.log(user.primaryEmailAddress.emailAddress)
+        if (result.status === 'completed' && result.result) {
+          images.push(result.result.publicUrl);
+        } else {
+          throw new Error('Image generation failed');
+        }
+        //images.push(response.data.result.publicUrl);
         console.log(images)
       }catch(e){
         console.log("error",e);
@@ -143,6 +150,30 @@ const CreateNew = () => {
     }))
 
     setLoading(false);
+  }
+
+
+  const PollForCompletion = async (taskId,maxAttempts=30,interval=5000) => {
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const response = await axios.get(`/api/generate-image?taskId=${taskId}`);
+      const result = response.data;
+
+      if (result.status === 'completed') {
+          return result;
+      }
+
+      if (result.status === 'error') {
+          throw new Error(result.error || 'Image generation failed');
+      }
+
+      // Wait before next attempt
+      await new Promise(resolve => setTimeout(resolve, interval));
+  }
+
+  throw new Error('Polling timeout');
+
+
   }
 
   useEffect(()=>{
